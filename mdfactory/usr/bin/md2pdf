@@ -1,0 +1,81 @@
+#!/bin/bash
+
+function progress(){
+    ACTIVE=`ps -a | grep $1 | wc -l`
+
+    while [ ${ACTIVE} -eq 1 ];  do
+           echo -n "."
+           sleep 1
+           ACTIVE=`ps -a | grep $1 | wc -l`
+    done
+    exit 0
+}
+
+
+FORCE=0
+
+while getopts ":o: f" opt; do
+  case ${opt} in
+    f ) # process option h
+	    FORCE=1
+      ;;
+    o ) # output file
+	    PDFFILE=$OPTARG
+      ;;
+    : )
+      echo "$OPTARG requires an argument" 1>&2 
+      ;;
+    \? ) echo "Syntax: md2pdf [-f] [-o file]"
+      ;;
+  esac
+done
+shift $((OPTIND -1))
+
+FILENAME=$1
+BASENAME=`echo $FILENAME | cut -d'.' -f1`
+EXT=`echo $FILENAME | cut -d'.' -f2`
+[ ${PDFFILE} ] || PDFFILE="${BASENAME}.pdf"
+
+
+if [ $# -lt 1 ]; then
+       echo "You need to specify input filename"
+       exit -1
+
+fi
+
+
+if [ ! ${EXT} = "md" ]; then
+       echo "Input file has no .md extension"
+       exit -1
+fi
+
+
+if [ ! -f ${FILENAME} ]; then
+       echo "${FILENAME} does not exists."
+       exit -1
+fi
+
+
+if [ -f ${PDFFILE} -a ${FORCE} -eq 0 ]; then
+       echo "${PDFFILE} exists and not forcing overwrite."
+       exit -1
+fi
+
+
+echo "Creating file ${PDFFILE}"
+
+
+progress $$ &
+
+
+pandoc ${FILENAME} --toc \
+	--pdf-engine=xelatex \
+	-o ${PDFFILE} \
+	--data-dir="/usr/share/mdfactory/" \
+	--from markdown \
+	--pdf-engine-opt=-shell-escape \
+	--template=eisvogel.latex \
+	--listings 
+
+echo "DONE."
+exit 0

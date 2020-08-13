@@ -1,0 +1,15 @@
+Source: mdfactory
+Section: misc
+Priority: optional
+Maintainer: Jose A. Múrcia <joamuran@gmail.com>
+Build-Depends: debhelper (>= 10)
+Standards-Version: 4.1.2
+#Homepage: <insert the upstream URL, if relevant>
+Vcs-Git: https://github.com/joamuran/mdfactory.git
+#Vcs-Browser: https://anonscm.debian.org/cgit/collab-maint/sample-package.git
+
+Package: mdfactory
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, pandoc, texlive-xetex, texlive-fonts-extra
+Description: <insert up to 60 chars description>
+ <insert long description, indented with spaces>
