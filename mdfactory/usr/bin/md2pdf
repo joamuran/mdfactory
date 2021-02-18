@@ -13,9 +13,13 @@ function progress(){
 
 
 FORCE=0
+NUMBER_SECTIONS=0
 
-while getopts ":o: f" opt; do
+while getopts ":o: f n" opt; do
   case ${opt} in
+    n ) # Numbering sections
+            NUMBER_SECTIONS=1
+      ;;
     f ) # process option h
 	    FORCE=1
       ;;
@@ -25,7 +29,7 @@ while getopts ":o: f" opt; do
     : )
       echo "$OPTARG requires an argument" 1>&2 
       ;;
-    \? ) echo "Syntax: md2pdf [-f] [-o file]"
+    \? ) echo "Syntax: md2pdf [-fn] [-o file]"
       ;;
   esac
 done
@@ -68,14 +72,30 @@ echo "Creating file ${PDFFILE}"
 progress $$ &
 
 
+if [ ${NUMBER_SECTIONS} == 1 ]; then	
 pandoc ${FILENAME} --toc \
 	--pdf-engine=xelatex \
 	-o ${PDFFILE} \
 	--data-dir="/usr/share/mdfactory/" \
 	--from markdown \
 	--pdf-engine-opt=-shell-escape \
+	-Vsecnumdepth=4 \
 	--template=eisvogel.latex \
+	--number-sections \
 	--listings 
+else 
+	pandoc ${FILENAME} --toc \
+        --pdf-engine=xelatex \
+        -o ${PDFFILE} \
+        --data-dir="/usr/share/mdfactory/" \
+        --from markdown \
+        --pdf-engine-opt=-shell-escape \
+        -Vsecnumdepth=4 \
+        --template=eisvogel.latex \
+        --listings
+fi
+
+
 
 echo "DONE."
 exit 0
