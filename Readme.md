@@ -16,6 +16,8 @@ Aquesta carpeta d'exemple está composta de tres documents, amb informació sobr
 
 # Requeriments
 
+Per al correcte funcionament de les eines, es requereix d'una versió de Pandoc superior a la 2.19.2-1. Podeu trobar les últimes versions pera Ubuntu a [https://github.com/jgm/pandoc/releases](https://github.com/jgm/pandoc/releases)
+
 A banda de la instal·lació del paquet deb, són necessaris alguns paquets i versions concretes de python.
 
 En primer lloc, instal·larem pip amb:

@@ -10,6 +10,6 @@ Vcs-Git: https://github.com/joamuran/mdfactory.git
 
 Package: mdfactory
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, pandoc, texlive-xetex, texlive-fonts-extra
+Depends: ${shlibs:Depends}, ${misc:Depends}, pandoc (>=2.19.2-1), texlive-xetex, texlive-fonts-extra
 Description: <insert up to 60 chars description>
  <insert long description, indented with spaces>
