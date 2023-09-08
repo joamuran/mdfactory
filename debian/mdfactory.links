@@ -1,5 +1,5 @@
-/usr/share/mdfactory/createPDF /usr/bin
-/usr/share/mdfactory/createPDFall /usr/bin
-/usr/share/mdfactory/createFullPdf /usr/bin
-/usr/share/mdfactory/createWeb /usr/bin
-/usr/share/mdfactory/createSimpleWeb /usr/bin
+/usr/share/mdfactory/createPDF /usr/bin/createPDF
+/usr/share/mdfactory/createPDFall /usr/bin/createPDFall
+/usr/share/mdfactory/createFullPdf /usr/bin/createFullPdf
+/usr/share/mdfactory/createWeb /usr/bin/createWeb
+/usr/share/mdfactory/createSimpleWeb /usr/bin/createSimpleWeb
