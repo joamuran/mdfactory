@@ -14,3 +14,25 @@ Aquesta carpeta d'exemple está composta de tres documents, amb informació sobr
 * [El fitxer content.yaml](exemple/2.contentYAML.md)
 * [Ordres de MDFactory](exemple/3.ordres.md)
 
+# Requeriments
+
+A banda de la instal·lació del paquet deb, són necessaris alguns paquets i versions concretes de python.
+
+En primer lloc, instal·larem pip amb:
+
+```
+sudo apt install python3-pip
+```
+
+I després instal·lem els paquets `panflute` (versió 1.12.5):
+
+```
+$ sudo pip install panflute==1.12.5
+```
+
+I pandoc-latex-environment:
+
+```
+sudo pip linstall pandoc-latex-environment
+```
+
