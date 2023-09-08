@@ -1,0 +1,46 @@
+#
+# Aquesta fitxer en format YAML gestiona l'estructura de tot un bloc de documentació
+# consistent en diversos fitxers Markdown. 
+# Per fer ús d'ella, només cal adaptar els diferents paràmetres, noms de fitxer, etc.
+#
+title: MdFactory                                         # Títol del document
+subtitle: Una eina per generar continguts amb Markdown   # Subtítol
+output: MdFactory                                        # [CreateFullPDF | CreateWeb]  Nom del document d'eixida o del lloc web
+pdfheader: header.md                                     # [CreateFullPDF] Capçalera per al PDF amb createFullDPF
+style: just.css                                          # [CreateWeb] Full d'estils per al web
+cards: true                                              # Seccions com a targetes
+lang: ca                                                 # Idioma
+bannerImg: img/banner.png                                # Imatge de portada
+
+# Ressum. Es pot fer ús de codi HTML a dins
+abstract: "MdFactory és un conjunt d'eines per a la creació de documentació fent ús del
+ llenguatge Markdown.
+<br/><br/>
+El motor amb què generem els documents és Pandoc, tant per a PDF com per a web, el que ens permet
+ fer del mateix font sense haver de realitzar cap canvi per generar l'eixida. 
+<br/><br/> 
+Les eines de mdfactory fan ús d'altres eines, com la plantilla Eisvogel per generar PDFs.
+<br/><br/>
+En aquesta documentació d'exemple podeu veure també com crear l'estructura de fitxers i com 
+ fer la configuració dels documents per treure'n tot el partit."
+#
+# Dividim la documentació en seccions (section). Cadascuna tindrà
+# un títol (title) i una referència al docuement Markdown on es troba (doc)
+# Opcionalment, podem afegir una etiqueta (class), que pot ser "practica"/"tutorial"
+# I també afegir una imatge per a la secció, amb cardImg
+sections:
+  - section:
+      title: 1. Estructura d'un fitxer Markdown per a MDFactory
+      doc: 1.Markdown.md
+      # class: practica | tutorial
+      # cardImg: img/banners/1.multiplataforma.png
+  - section:
+      title: 2. Configuració del fitxer content.yaml
+      doc: 2.contentYAML.md
+      # cardImg: img/banners/2content.png
+      # class: tutorial
+  - section:
+      title: 3. Ordres de mdFactory
+      doc: 3.ordres.md
+      # class: tutorial
+      # cardImg: img/banners/3.ordres.png

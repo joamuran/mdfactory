@@ -1,0 +1,30 @@
+#!/bin/bash
+
+if [ $# -lt 1 ]; then
+    echo "Cal indicar un fitxer";
+	exit -1;
+fi
+
+if [ $# -eq 1 ]; then
+    FILENAME=$1
+    BASENAME="${FILENAME%.*}"
+else
+    FILENAME="${*%${!#}}"
+    BASENAME="${@:$#}"
+fi
+
+
+TEMPLATE="/usr/share/mdfactory/templates/topdf.md";
+
+
+echo "Executant..."
+echo "pandoc $FILENAME --defaults ${TEMPLATE} -o ${BASENAME}.pdf"
+pandoc $FILENAME -f markdown-implicit_figures  --defaults ${TEMPLATE} -o ${BASENAME}.pdf 
+
+ERROR=$?;
+if [ ${ERROR} -eq 0 ]; then
+	echo "FET."
+else
+    echo "Eixida amb error ${ERROR}";
+	exit ${ERROR}
+fi

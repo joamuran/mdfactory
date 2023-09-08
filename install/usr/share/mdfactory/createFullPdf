@@ -1,0 +1,96 @@
+#!/bin/python3
+
+from datetime import datetime
+import time
+import yaml
+import os
+import sys
+import getopt
+import shutil
+
+
+def copyMd(doc, f):
+    with open(doc, "r") as f2:
+        content = f2.readlines()
+        frontmatter = False
+        firstLine = True
+        for line in content:
+            if line == "---\n" and firstLine == True:
+                frontmatter = True
+
+            if line == "---\n" and firstLine == True and frontmatter == True:
+                print("firstLinse true i frontmatter true")
+            if line == "---\n" and firstLine == False and frontmatter == True:
+                print("firstLinse false i frontmatter true**")
+            if line == "---\n" and firstLine == True and frontmatter == False:
+                print("firstLinse true i frontmatter false")
+            if line == "---\n" and firstLine == False and frontmatter == False:
+                print("firstLinse false i frontmatter false")
+
+            if line == "---\n" and firstLine == False and frontmatter == True:
+                frontmatter = False
+                line = ""
+                continue
+
+            if frontmatter == False:
+
+                # Afegim un # de més
+                if line[0] == "#":
+                    line = "#"+line
+
+                f.write(line)
+
+            firstLine = False
+
+
+if __name__ == '__main__':
+
+    dir = os.getcwd()
+    filedir = os.path.dirname(os.path.realpath(__file__))
+
+    createPDFArgs = ""
+    stream = open(dir+"/content.yaml", 'r')
+    dictionary = yaml.load(stream, Loader=yaml.FullLoader)
+
+    # Nom del md temporal
+    tmpOutput = "/output-"+str(time.time())+".md"
+
+    # Nom del fitxer d'eixida
+    outputfile = "eixida.pdf"
+    if ("output" in dictionary):
+        outputfile = dictionary["output"]
+
+        # pdfheader = dictionary["pdfheader"]
+
+    # Capçalera per al pdf
+    pdfheader = ""
+    if ("pdfheader" in dictionary and os.path.isfile(dir+"/"+dictionary["pdfheader"])):
+        # pdfheader = dictionary["pdfheader"]
+        with open(dir+tmpOutput, "a") as f:
+            with open(dir+"/"+dictionary["pdfheader"], "r") as f2:
+                content = f2.readlines()
+                for line in content:
+                    f.write(line)
+            # f.write("\n")
+
+    # Generant directori treball
+    #os.system("[ -d "+dir+"/pdfstuff ] && rm -r "+dir+"/pdfstuff")
+    #os.system("mkdir "+dir+"/pdfstuff")
+
+    # I després de la capçalera, bolquem el contingut dels mds
+
+    for section in dictionary["sections"]:
+
+        # with open(dir+"/pdfstuff/output.md", "a") as f:
+        with open(dir+tmpOutput, "a") as f:
+            f.write("\n# "+section["section"]
+                    ["title"].lstrip('0123456789.- ')+"\n")
+
+            copyMd(dir+"/"+section["section"]["doc"], f)
+
+            # Afegim un bot de línia al final
+            f.write("\n")
+
+    # Comentar per no generar el pdf
+    os.system("createPDF "+dir+tmpOutput+" "+outputfile)
+    os.system("rm "+dir+tmpOutput)

@@ -1,0 +1,17 @@
+#!/bin/bash
+
+[ -d web ] && rm -r web
+mkdir web
+[ -d img ] && cp -r img web/
+[ -d rsc ] && cp -r rsc web/
+
+# SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+SCRIPT_DIR=$( cd -- "$( dirname -- "$(readlink -f "${BASH_SOURCE[0]}")" )" &> /dev/null && pwd )
+cp -r "$SCRIPT_DIR/webtemplate/rsc" web
+cp "$SCRIPT_DIR/webtemplate/aqua.css" web
+
+FILE="${1%%.*}"
+
+pandoc ${1} -o "web/$FILE.html" --toc -s --number-sections --template "$SCRIPT_DIR/webtemplate/plantilla.html" --css aqua.css --highlight-style tango --syntax-definition="$SCRIPT_DIR/languages/dart.xml"
+
+echo "Fet!"

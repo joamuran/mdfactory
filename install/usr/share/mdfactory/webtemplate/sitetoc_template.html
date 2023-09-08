@@ -1,0 +1,73 @@
+<!--creating the button to handle opening the navbar-->
+
+<nav id="sitetoc">
+    <span onclick="openNav()" class="mobile-nav-open-icon">&#9776</span>
+    <span class="title"><a href="./index.html">$title$</a></span>
+</nav>
+
+<!-- this would work as the backdrop when navbar is open-->
+<!--div class="backdrop-container" id="backdrop"></div-->
+
+<!--the would be the drawer and it's content-->
+<div id="mySidenav" class="sidenav-container">
+    <div class="navContainer">
+
+        <!--span class="drawer-close-button "-->
+        <!--icon for closing of the navbar-->
+        <!--!a href="javascript:void(0) " class="closebtn " onclick="closeNav() ">&times;</a></span-->
+
+        <h3>
+            <a href="index.html ">
+                <!--UnitTitle-->
+            </a>
+        </h3>
+
+        <!--navbarTemplate-->
+
+    </div>
+</div>
+
+<script>
+    var navOpen
+
+    function openNav() {
+        console.log(typeof(navOpen));
+        if (typeof(navOpen) == "undefined ") navOpen = true;
+
+        if (navOpen) {
+            //opens side navbar by 70 percent
+            document.getElementById("mySideNav").style.width = "40% "
+            document.getElementById("mySideNav").style.paddingLeft = "48px "
+            document.getElementById("mySideNav").style.paddingRight = "12px "
+            document.getElementById("mySideNav").style.boxShadow = "2px 20px 10px #dddddd "
+            document.getElementById("mySideNav").style.left = "0px "
+        } else {
+            document.getElementById("mySideNav").style.width = "0 "
+
+            document.getElementById("mySideNav").style.paddingLeft = "0px "
+            document.getElementById("mySideNav").style.border = "0px "
+            document.getElementById("mySideNav").style.boxShadow = "0px 0px 0px "
+            document.getElementById("mySideNav").style.left = "-50px "
+        }
+
+        navOpen = !navOpen;
+
+
+
+
+        //opens overlay display
+        //document.getElementById('backdrop').style.display = "block "
+    }
+
+    function closeNav() {
+        //closes side navbar totally
+        document.getElementById("mySideNav").style.width = "0 "
+
+        document.getElementById("mySideNav").style.paddingLeft = "0px "
+        document.getElementById("mySideNav").style.border = "0px "
+        document.getElementById("mySideNav").style.boxShadow = "0px 0px 0px "
+
+        //removes overlay display
+        //document.getElementById('backdrop').style.display = "none "
+    }
+</script>

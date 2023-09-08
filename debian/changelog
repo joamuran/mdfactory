@@ -1,3 +1,11 @@
+mdfactory (1.0.0) jammy; urgency=high
+
+  * New MDFactory version
+  * Added createPDF, createPDFall, createWeb and createSimlpeWeb commands
+  * Included template and some CSS for web export
+
+ -- Jose A. Múrcia <joamuran@gmail.com>  Thu, 07 Sep 2023 06:27:18 +0200
+
 mdfactory (0.0.2) focal; urgency=high
 
   * Added -n option to autonumber pages

@@ -1,0 +1,222 @@
+#!/bin/python3
+
+from datetime import datetime
+import yaml
+import os
+import sys
+import getopt
+import shutil
+
+
+def createCard(section):
+    link = section["section"]["doc"].replace(".md", ".html")
+    title = section["section"]["title"]
+    subtitle = ""
+    cardImg = "rsc/default.png"
+
+    if ("class" in section["section"]):
+        classname = section["section"]["class"]
+        subtitle = "<p class="+classname+">"+classname+"</p>"
+
+    if ("cardImg" in section["section"]):
+        cardImg = section["section"]["cardImg"]
+
+    card = """
+    <div class="card">
+    <a href='{link}'>
+        <div class="card-cover">
+            <img src="{cardImg}">
+        </div>
+        <div class="card-content">
+            <h3>{title}</h3>
+            {subtitle}
+        </div>
+    </div>
+    """.format(link=link, cardImg=cardImg, title=title, subtitle=subtitle)
+
+    return card
+
+
+if __name__ == '__main__':
+
+    dir = os.getcwd()
+    filedir = os.path.dirname(os.path.realpath(__file__))
+
+    exportPDF = False
+    generateCards = False
+
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], "", ["pdf"])
+        print(opts)
+    except getopt.GetoptError as err:
+        print(err)
+        sys.exit(2)
+
+    for o, a in opts:
+        if o in ("--pdf"):
+            #exportPDF = False
+            exportPDF = True
+
+    print(exportPDF)
+    createPDFArgs = ""
+    stream = open(dir+"/content.yaml", 'r')
+    dictionary = yaml.load(stream, Loader=yaml.FullLoader)
+
+    # Comprovem si existeix el paràmetre `style` en el content.yaml
+    # Si no, per defecte escollim theme.css
+    style = "theme.css"
+    if ("style" in dictionary and os.path.isfile(filedir+"/webtemplate/"+dictionary["style"])):
+        style = dictionary["style"]
+
+    # Capçalera per al pdf
+    pdfheader = ""
+    if ("pdfheader" in dictionary and os.path.isfile(dir+"/"+dictionary["pdfheader"])):
+        pdfheader = dictionary["pdfheader"]
+
+    # Comprovem si s'ha definit el flag per generar targetes
+    if ("cards" in dictionary and dictionary["cards"] == True):
+        generateCards = True
+
+    #print (dictionary["title"])
+    #print (dictionary["output"])
+
+    print("\nGenerant web...\n")
+
+    # Generant directori web
+    os.system("[ -d "+dir+"/web ] && rm -r "+dir+"/web")
+    os.system("mkdir "+dir+"/web")
+    os.system("[ -d "+dir+"/img ] && cp -r "+dir+"/img "+dir+"/web/")
+    os.system("[ -d "+dir+"/rsc ] && cp -r "+dir+"/rsc "+dir+"/web/")
+    os.system("cp -r "+filedir+"/webtemplate/rsc web/")
+    os.system("cp "+filedir+"/webtemplate/"+style+" web/")
+
+    # Si existeix una imatge de fons, la sobreescrivim
+    os.system("[ -f "+dir+"/web/img/html_bg.png ] && mv " +
+              dir+"/web/img/html_bg.png "+dir+"/web/rsc/bg.png")
+
+    sitetocIndex = ""  # Per generar el TOC per a cada pàgina individual
+
+    siteIndexHtml = ""  # Per generar la pàgina index.html
+
+    for section in dictionary["sections"]:
+        extraClass = ""
+        if "class" in section["section"]:
+            extraClass = "class="+section["section"]["class"]
+
+        sitetocIndex += "\t\t<a href='"+section["section"]["doc"].replace(
+            ".md", ".html")+"' onclick='closeNav()'>"+section["section"]["title"]+"</a>\n"
+
+        if (generateCards):
+            siteIndexHtml += createCard(section)
+        else:
+            siteIndexHtml += "\t\t<li><a "+extraClass+" href='" + \
+                section["section"]["doc"].replace(
+                    ".md", ".html")+"'>"+section["section"]["title"]+"</a></li>\n"
+
+    if (generateCards):
+        siteIndexHtml = '<div class="siteIndex">'+siteIndexHtml+'</div>'
+    else:
+        siteIndexHtml = '<ul class="siteIndex">'+siteIndexHtml+'</ul>'
+
+    # Modificació de la plantilla per generar el sitetoc:
+    with open(filedir+"/webtemplate/sitetoc_template.html", "r") as f:
+        contents = f.readlines()
+
+    index = 0
+    for line in contents:
+        contents[index] = contents[index].replace(
+            "$title$", dictionary["title"])
+
+        if (line.strip() == "<!--navbarTemplate-->"):
+            contents.insert(index+1, sitetocIndex)
+            break
+
+        if (line.strip() == "<!--UnitTitle-->"):
+            contents.insert(index+1, dictionary["title"])
+            # break
+
+        index = index+1
+
+    with open(dir+"/web/sitetoc.html", "w") as f:
+        contents = "".join(contents)
+        f.write(contents)
+
+    # Generació de l'index.html
+
+    with open(filedir+"/webtemplate/index.html", "r") as f:
+        contents = f.readlines()
+
+    index = 0
+
+    # Recorrem el contingut, emplenant les variables i placeholders
+
+    for line in contents:
+
+        # Títol
+        if "title" in dictionary:
+            titleline = dictionary["title"]
+
+        # Subtítol
+        if "subtitle" in dictionary:
+            subtitleline = dictionary["subtitle"]
+            #titleline = titleline+"<h1>"+dictionary["subtitle"]+"</h1>"
+
+        contents[index] = contents[index].replace("$title$", titleline)
+        contents[index] = contents[index].replace("$subtitle$", subtitleline)
+
+        # Bànner
+        if "bannerImg" in dictionary:
+            contents[index] = contents[index].replace(
+                "$bannerImg$", dictionary["bannerImg"])
+
+        # Ressum
+        if "abstract" in dictionary:
+            contents[index] = contents[index].replace(
+                "$abstract$", dictionary["abstract"])
+
+        # Estils
+        contents[index] = contents[index].replace(
+            "$stylesheet$", style)
+
+        # Plantilla pe a línndex
+        if (line.strip() == "<!--index-->"):
+            contents.insert(index+1, siteIndexHtml)
+            break
+
+        # Avancem l'índex en contents
+        index = index+1
+
+    with open(dir+"/web/index.html", "w") as f:
+        contents = "".join(contents)
+        f.write(contents)
+
+    # Generació dels documents html
+
+    for section in dictionary["sections"]:
+        #print (section["section"]["title"])
+        #print (section["section"]["doc"])
+        createPDFArgs += section["section"]["doc"]+" "
+        #os.system("pandoc "+dir+"/"+section["section"]["doc"]+" -o "+dir+"/web/"+section["section"]["doc"].replace(".md", ".html")+" -s --number-sections --template "+filedir+"/webtemplate/plantilla.html --css "+dir+"/web/theme.css --toc -B "+dir+"/web/sitetoc.html --highlight-style tango")
+        #os.system("pandoc "+dir+"/"+section["section"]["doc"]+" -o "+dir+"/web/"+section["section"]["doc"].replace(".md", ".html")+" -s --number-sections --template "+filedir+"/webtemplate/plantilla.html --css theme.css --toc -B "+dir+"/web/sitetoc.html --highlight-style tango")
+        print("pandoc "+dir+"/"+section["section"]["doc"]+" -o "+dir+"/web/"+section["section"]["doc"].replace(".md", ".html") +
+              " -s --number-sections --template "+filedir+"/webtemplate/plantilla.html --css "+style+" --toc -B "+dir+"/web/sitetoc.html --highlight-style tango" +
+              " --syntax-definition="+filedir+"/languages/dart.xml")
+        os.system("pandoc "+dir+"/"+section["section"]["doc"]+" -o "+dir+"/web/"+section["section"]["doc"].replace(".md", ".html") +
+                  " -s --number-sections --template "+filedir+"/webtemplate/plantilla.html --css "+style+" --toc -B "+dir+"/web/sitetoc.html --highlight-style tango" +
+                  " --syntax-definition="+filedir+"/languages/dart.xml")
+
+    # Generació del pdfs
+
+    createPDFArgs += pdfheader+" "
+    createPDFArgs += dictionary["output"]
+
+    if (exportPDF == True):
+        print("\nGenerant PDF...\n")
+        os.system("createPDF "+createPDFArgs)  # Comentar per no generar el pdf
+
+   # Una vegada acabat, fem el zip
+
+    print("Generant... "+dir+"/web/Archive.zip")
+    shutil.make_archive(dir+"/WebArchive", 'zip', dir+"/web")
+
+    print("Finalitzat el "+datetime.now().strftime("%H:%M:%S"))

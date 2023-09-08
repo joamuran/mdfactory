@@ -1,0 +1,5 @@
+/usr/share/mdfactory/createPDF /usr/bin
+/usr/share/mdfactory/createPDFall /usr/bin
+/usr/share/mdfactory/createFullPdf /usr/bin
+/usr/share/mdfactory/createWeb /usr/bin
+/usr/share/mdfactory/createSimpleWeb /usr/bin
