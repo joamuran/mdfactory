@@ -35,6 +35,6 @@ $ sudo pip install panflute==1.12.5
 I pandoc-latex-environment:
 
 ```
-sudo pip linstall pandoc-latex-environment
+sudo pip install pandoc-latex-environment
 ```
 
