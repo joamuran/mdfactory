@@ -63,8 +63,8 @@ if __name__ == '__main__':
     dictionary = yaml.load(stream, Loader=yaml.FullLoader)
 
     # Comprovem si existeix el paràmetre `style` en el content.yaml
-    # Si no, per defecte escollim theme.css
-    style = "theme.css"
+    # Si no, per defecte escollim just.css
+    style = "just.css"
     if ("style" in dictionary and os.path.isfile(filedir+"/webtemplate/"+dictionary["style"])):
         style = dictionary["style"]
 
@@ -157,6 +157,7 @@ if __name__ == '__main__':
             titleline = dictionary["title"]
 
         # Subtítol
+        subtitleline="";
         if "subtitle" in dictionary:
             subtitleline = dictionary["subtitle"]
             #titleline = titleline+"<h1>"+dictionary["subtitle"]+"</h1>"
@@ -196,8 +197,8 @@ if __name__ == '__main__':
         #print (section["section"]["title"])
         #print (section["section"]["doc"])
         createPDFArgs += section["section"]["doc"]+" "
-        #os.system("pandoc "+dir+"/"+section["section"]["doc"]+" -o "+dir+"/web/"+section["section"]["doc"].replace(".md", ".html")+" -s --number-sections --template "+filedir+"/webtemplate/plantilla.html --css "+dir+"/web/theme.css --toc -B "+dir+"/web/sitetoc.html --highlight-style tango")
-        #os.system("pandoc "+dir+"/"+section["section"]["doc"]+" -o "+dir+"/web/"+section["section"]["doc"].replace(".md", ".html")+" -s --number-sections --template "+filedir+"/webtemplate/plantilla.html --css theme.css --toc -B "+dir+"/web/sitetoc.html --highlight-style tango")
+        #os.system("pandoc "+dir+"/"+section["section"]["doc"]+" -o "+dir+"/web/"+section["section"]["doc"].replace(".md", ".html")+" -s --number-sections --template "+filedir+"/webtemplate/plantilla.html --css "+dir+"/web/just.css --toc -B "+dir+"/web/sitetoc.html --highlight-style tango")
+        #os.system("pandoc "+dir+"/"+section["section"]["doc"]+" -o "+dir+"/web/"+section["section"]["doc"].replace(".md", ".html")+" -s --number-sections --template "+filedir+"/webtemplate/plantilla.html --css just.css --toc -B "+dir+"/web/sitetoc.html --highlight-style tango")
         print("pandoc "+dir+"/"+section["section"]["doc"]+" -o "+dir+"/web/"+section["section"]["doc"].replace(".md", ".html") +
               " -s --number-sections --template "+filedir+"/webtemplate/plantilla.html --css "+style+" --toc -B "+dir+"/web/sitetoc.html --highlight-style tango" +
               " --syntax-definition="+filedir+"/languages/dart.xml")
