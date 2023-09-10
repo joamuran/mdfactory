@@ -26,10 +26,10 @@ En primer lloc, instal·larem pip amb:
 sudo apt install python3-pip
 ```
 
-I després instal·lem els paquets `panflute` (versió 1.12.5):
+I després instal·lem els paquets `panflute`:
 
 ```
-$ sudo pip install panflute==1.12.5
+$ sudo pip install panflute
 ```
 
 I pandoc-latex-environment:
