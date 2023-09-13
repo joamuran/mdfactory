@@ -3,3 +3,4 @@
 /usr/share/mdfactory/createFullPdf /usr/bin/createFullPdf
 /usr/share/mdfactory/createWeb /usr/bin/createWeb
 /usr/share/mdfactory/createSimpleWeb /usr/bin/createSimpleWeb
+/usr/share/doc/fonts-sil-charis/documentation/source/pandocfilters/filter-html.lua /usr/share/mdfactory/filter-html.lua

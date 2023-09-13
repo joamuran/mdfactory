@@ -201,10 +201,10 @@ if __name__ == '__main__':
         #os.system("pandoc "+dir+"/"+section["section"]["doc"]+" -o "+dir+"/web/"+section["section"]["doc"].replace(".md", ".html")+" -s --number-sections --template "+filedir+"/webtemplate/plantilla.html --css just.css --toc -B "+dir+"/web/sitetoc.html --highlight-style tango")
         print("pandoc "+dir+"/"+section["section"]["doc"]+" -o "+dir+"/web/"+section["section"]["doc"].replace(".md", ".html") +
               " -s --number-sections --template "+filedir+"/webtemplate/plantilla.html --css "+style+" --toc -B "+dir+"/web/sitetoc.html --highlight-style tango" +
-              " --syntax-definition="+filedir+"/languages/dart.xml")
+              " --syntax-definition="+filedir+"/languages/dart.xml --lua-filter=/usr/share/mdfactory/filter-html.lua")
         os.system("pandoc "+dir+"/"+section["section"]["doc"]+" -o "+dir+"/web/"+section["section"]["doc"].replace(".md", ".html") +
                   " -s --number-sections --template "+filedir+"/webtemplate/plantilla.html --css "+style+" --toc -B "+dir+"/web/sitetoc.html --highlight-style tango" +
-                  " --syntax-definition="+filedir+"/languages/dart.xml")
+                  " --syntax-definition="+filedir+"/languages/dart.xml --lua-filter=/usr/share/mdfactory/filter-html.lua")
 
     # Generació del pdfs
 

@@ -1,3 +1,9 @@
+mdfactory (1.0.3) jammy; urgency=medium
+
+  * Added pandoc filter to generate html links form md links
+
+ -- Jose A. Múrcia <joamuran@gmail.com>  Wed, 13 Sep 2023 11:33:19 +0200
+
 mdfactory (1.0.2) jammy; urgency=medium
 
   * Fixed style.css to just.css in createWeb Script
