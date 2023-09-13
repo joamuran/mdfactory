@@ -456,7 +456,7 @@ h2.siteTitle {
 }
 
 .card .card-cover img {
-    width: 100%;
+    max-width: 100%;
 }
 
 .card-content {
