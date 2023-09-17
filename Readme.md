@@ -38,3 +38,10 @@ I pandoc-latex-environment:
 sudo pip install pandoc-latex-environment
 ```
 
+## Instal·lació del filtre Mermaid
+
+A partir de la versió 1.0.4 s'ha incorporat el filtre [Mermaid](https://github.com/raghur/mermaid-filter), que permet generar diagrames de diversos tipus (diagrames de classes, de comportament, etc.). Per tal que aquest funcione, cal realitzar la instal·lació prèviamen del paquet *npm* corresponent amb:
+
+```
+sudo npm install --global mermaid-filter
+```

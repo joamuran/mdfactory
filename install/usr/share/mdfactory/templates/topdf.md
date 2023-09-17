@@ -9,4 +9,5 @@ highlight-style: tango
 syntax-definition: /usr/share/mdfactory/languages/dart.xml
 filters:
    - pandoc-latex-environment
+   - mermaid-filter
 #   - /tmp/Pandoc-Emojis-Filter/emoji_filter.js

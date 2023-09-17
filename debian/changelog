@@ -1,3 +1,10 @@
+mdfactory (1.0.4) jammy; urgency=medium
+
+  * Added support to mermaid filter
+  * Added --style option to createSimpleWeb script
+
+ -- José A. <joamuran@gmail.com>  Sun, 17 Sep 2023 18:46:18 +0200
+
 mdfactory (1.0.3) jammy; urgency=medium
 
   * Added pandoc filter to generate html links form md links

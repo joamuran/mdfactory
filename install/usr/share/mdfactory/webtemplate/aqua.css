@@ -280,7 +280,7 @@ img.modal-content {
     max-width: 700px;
     text-align: center;
     color: #192150;
-    background-color: #d5e7e6;
+    /*background-color: #d5e7e6;*/
     padding: 10px 0;
     height: 50px;
 }

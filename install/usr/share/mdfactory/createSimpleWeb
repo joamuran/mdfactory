@@ -1,5 +1,33 @@
 #!/bin/bash
 
+# Valors per defecte
+ESTIL="just.css"
+FITXER=""
+
+# Arguments
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --style)
+            ESTIL="$2"
+            shift 2
+            ;;
+        *)
+
+            if [ -z "$FITXER" ]; then
+                FITXER="$1"
+                shift
+            else
+                echo "Us: $0 [--style <fitxer.css>] Fitxer.md"
+                exit 1
+            fi
+            ;;
+            
+    esac
+done
+
+# Directoris
+
 [ -d web ] && rm -r web
 mkdir web
 [ -d img ] && cp -r img web/
@@ -9,9 +37,12 @@ mkdir web
 SCRIPT_DIR=$( cd -- "$( dirname -- "$(readlink -f "${BASH_SOURCE[0]}")" )" &> /dev/null && pwd )
 cp -r "$SCRIPT_DIR/webtemplate/rsc" web
 cp "$SCRIPT_DIR/webtemplate/aqua.css" web
+cp "$SCRIPT_DIR/webtemplate/just.css" web
 
-FILE="${1%%.*}"
+#FILE="${1%%.*}"
+FILE="${FITXER%%.*}"
 
-pandoc ${1} -o "web/$FILE.html" --toc -s --number-sections --template "$SCRIPT_DIR/webtemplate/plantilla.html" --css aqua.css --highlight-style tango --syntax-definition="$SCRIPT_DIR/languages/dart.xml"
+
+pandoc ${FITXER} -o "web/$FILE.html" -F mermaid-filter --toc -s --number-sections --template "$SCRIPT_DIR/webtemplate/plantilla.html" --css "$ESTIL" --highlight-style tango --syntax-definition="$SCRIPT_DIR/languages/dart.xml"
 
 echo "Fet!"
