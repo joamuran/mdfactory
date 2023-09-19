@@ -1,3 +1,9 @@
+mdfactory (1.0.5) jammy; urgency=medium
+
+  * Added copy button for source code
+
+ -- Jose A. Múrcia <joamuran@gmail.com>  Tue, 19 Sep 2023 07:19:14 +0200
+
 mdfactory (1.0.4) jammy; urgency=medium
 
   * Added support to mermaid filter
